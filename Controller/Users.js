@@ -5,41 +5,36 @@ const bcrypt = require("bcrypt");
 const emailValidator = require("deep-email-validator");
 const nodemailer = require("nodemailer");
 
-async function isEmailValid(email) {
-	return emailValidator.validate(email);
-}
+// async function isEmailValid(email) {
+// 	return emailValidator.validate(email);
+// }
 
+const UserSchema = require("../Models/Users");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const SignUp = async (req, res) => {
 	try {
-		const { email, password } = req.body;
-		const { valid, reason, validators } = await isEmailValid(email);
-		if (valid) {
-			let existingUser = await UserSchema.findOne({
-				email: email,
-			});
-			if (existingUser)
-				res.status(403).json({
-					msg: "email already exists",
-					success: false,
-				});
-			else {
-				const salt = await bcrypt.genSalt(10);
-				const hashedPassword = await bcrypt.hash(password, salt);
-
-				const response = await UserSchema.create({
-					...req.body,
-					password: hashedPassword,
-				});
-
-				res.status(201).json({
-					msg: "successfully Signed Up",
-					success: true,
-				});
-			}
-		} else {
+		const { name, email, password } = req.body;
+		let existingUser = await UserSchema.findOne({
+			email: email,
+		});
+		if (existingUser)
 			res.status(403).json({
-				msg: "Please provide valid email address",
+				msg: "email already exists",
 				success: false,
+			});
+		else {
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(password, salt);
+
+			const response = await UserSchema.create({
+				...req.body,
+				password: hashedPassword,
+			});
+
+			res.status(201).json({
+				msg: "successfully Signed Up",
+				success: true,
 			});
 		}
 	} catch (error) {
@@ -47,7 +42,7 @@ const SignUp = async (req, res) => {
 		res.json({
 			msg: "Something went wrong",
 			success: false,
-			error: error,
+			 error: error,
 		});
 	}
 };
