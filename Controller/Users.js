@@ -1,17 +1,10 @@
 const UserSchema = require("../Models/Users");
-const ProfileSchema = require("../Models/Profile");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const emailValidator = require("deep-email-validator");
+const ProfileSchema = require("../Models/Profile");
 const nodemailer = require("nodemailer");
 
-// async function isEmailValid(email) {
-// 	return emailValidator.validate(email);
-// }
 
-const UserSchema = require("../Models/Users");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const SignUp = async (req, res) => {
 	try {
 		const { name, email, password } = req.body;
@@ -46,6 +39,7 @@ const SignUp = async (req, res) => {
 		});
 	}
 };
+
 
 const generateToken = (id, email) => {
 	let token = jwt.sign({ userId: id, userEmail: email }, process.env.JWT_SECRET);
