@@ -143,7 +143,7 @@ const forgotPassword = async (req, res) => {
 				to: email,
 				subject: "Password Reset",
 				text: "Dont worry we will help you get your password back.",
-				html: `<a href="http://localhost:3000/updatePassword/${newid}">click here to reset your password</a>`,
+				html: `<a href="https://expenseapimac.onrender.com/updatePassword/${newid}">click here to reset your password</a>`,
 			};
 
 			transporter.sendMail(mailOptions, (error, info) => {
